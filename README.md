@@ -1,4 +1,4 @@
-# Learnify — Online Course Marketplace
+# SkillNest — Online Course Marketplace
 
 A full-featured course marketplace built on **Laravel 12**, **Blade**, **AlpineJS**, and **Tailwind CSS v4**. The platform supports three distinct user roles — student, instructor, and administrator — with a complete payment pipeline powered by Stripe Checkout and Stripe Connect.
 
@@ -19,7 +19,7 @@ A full-featured course marketplace built on **Laravel 12**, **Blade**, **AlpineJ
 
 ## Overview
 
-Learnify is a production-oriented learning marketplace covering the full lifecycle of an online course platform: content creation, discovery, purchase, consumption, and certification. The application is intentionally built without a JavaScript framework on the frontend — Blade components, AlpineJS, and server-side rendering handle all UI concerns cleanly and efficiently.
+SkillNest is a production-oriented learning marketplace covering the full lifecycle of an online course platform: content creation, discovery, purchase, consumption, and certification. The application is intentionally built without a JavaScript framework on the frontend — Blade components, AlpineJS, and server-side rendering handle all UI concerns cleanly and efficiently.
 
 ![Platform screenshot](./screenshots/Screenshot%202026-05-28%20161141.png)
 
@@ -109,8 +109,8 @@ The application follows conventional Laravel conventions with a few deliberate p
 > Requires PHP 8.2+, Composer, Node 18+, and a running MySQL or SQLite instance.
 
 ```bash
-git clone https://github.com/your-username/learnify.git
-cd learnify
+git clone https://github.com/your-username/SkillNest.git
+cd SkillNest
 
 composer install
 cp .env.example .env
@@ -141,7 +141,7 @@ php artisan serve
 ```env
 # Database
 DB_CONNECTION=mysql
-DB_DATABASE=learnify
+DB_DATABASE=SkillNest
 
 # Stripe
 STRIPE_KEY=pk_test_...
