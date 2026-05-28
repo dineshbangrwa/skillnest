@@ -19,13 +19,7 @@ Our internal goal at Laravel Daily is to start using this starter kit for our De
 
 ## Screenshots
 
-![](https://laraveldaily.com/uploads/2025/05/LoginPage.png)
-
-![](https://laraveldaily.com/uploads/2025/05/RegisterPage.png)
-
-![](https://laraveldaily.com/uploads/2025/05/DashboardPage.png)
-
-![](https://laraveldaily.com/uploads/2025/05/ProfilePage.png)
+![](./screenshots/Screenshot%202026-05-28%20161141.png)
 
 ---
 
