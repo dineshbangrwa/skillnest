@@ -1,0 +1,21 @@
+{
+    "agents": [
+        "copilot"
+    ],
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "packages": [
+        "spatie/laravel-medialibrary"
+    ],
+    "sail": false,
+    "skills": [
+        "cashier-stripe-development",
+        "laravel-best-practices",
+        "scout-development",
+        "socialite-development",
+        "pest-testing",
+        "tailwindcss-development",
+        "medialibrary-development"
+    ]
+}
