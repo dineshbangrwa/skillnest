@@ -11,7 +11,7 @@ This repository is a polished online learning marketplace built on Laravel 12, B
 - **Google OAuth** login and email verification
 - advanced course management, search, progress tracking, certificates, and more
 
-This starter kit is perfect for recruiters or product owners who want to see a real-world, production-oriented Blade application built using Laravel best practices.
+This project is perfect for recruiters or product owners who want to see a real-world, production-oriented Blade application built using Laravel best practices.
 
 ---
 
@@ -156,4 +156,4 @@ php artisan serve
 
 ## License
 
-This starter kit is open sourced under the MIT License.
+This project is open sourced under the MIT License.
