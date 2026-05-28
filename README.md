@@ -1,159 +1,189 @@
-# Udemy Clone Project (Laravel 12 + Blade)
+# Learnify — Online Course Marketplace
+
+A full-featured course marketplace built on **Laravel 12**, **Blade**, **AlpineJS**, and **Tailwind CSS v4**. The platform supports three distinct user roles — student, instructor, and administrator — with a complete payment pipeline powered by Stripe Checkout and Stripe Connect.
 
 ---
 
-## Project Summary
+## Table of Contents
 
-This repository is a polished online learning marketplace built on Laravel 12, Blade templates, AlpineJS and Tailwind CSS. It is a complete production-grade application that showcases a modern SaaS-style course platform with:
-
-- full **student**, **instructor**, and **admin** workflows
-- **Stripe checkout**, **Stripe Connect**, and webhook-based enrollment processing
-- **Google OAuth** login and email verification
-- advanced course management, search, progress tracking, certificates, and more
-
-This project is perfect for recruiters or product owners who want to see a real-world, production-oriented Blade application built using Laravel best practices.
-
----
-
-## Why this project stands out
-
-- Designed to feel like a real learning marketplace, not a toy demo.
-- Uses a clean, maintainable architecture: controller resources, service classes, middleware, policies and reusable form requests.
-- Supports multiple user journeys: customer purchase flow, instructor onboarding, and admin moderation.
-- Built with modern Laravel tooling: Vite, Tailwind v4, AlpineJS, Cashier, Scout, Socialite, and Spatie packages.
+- [Overview](#overview)
+- [Feature Set](#feature-set)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Development](#development)
+- [Testing](#testing)
+- [License](#license)
 
 ---
 
-## Core Features
+## Overview
 
-### Student Experience
+Learnify is a production-oriented learning marketplace covering the full lifecycle of an online course platform: content creation, discovery, purchase, consumption, and certification. The application is intentionally built without a JavaScript framework on the frontend — Blade components, AlpineJS, and server-side rendering handle all UI concerns cleanly and efficiently.
 
-- Course discovery with search and category filtering
-- Course detail pages with preview lessons, instructor info, ratings, and enrollment checks
-- Add to cart, wishlist, coupon application, and checkout flow
-- Stripe payment integration with order processing and automatic enrollment
-- My Learning dashboard with lesson progress tracking
-- Downloadable certificates after course completion
-- Course reviews, discussion threads, and student notifications
-
-### Instructor Experience
-
-- Instructor dashboard and protected instructor routes
-- Stripe Connect onboarding for instructor payouts
-- Course creation and lesson management
-- Discussion management and instructor replies
-- Course statistics surfaced in instructor views
-
-### Admin Experience
-
-- Admin dashboard with role-based access control
-- Full CRUD for users, courses, lessons, enrollments, reviews, certificates, categories, coupons, contacts, and newsletters
-- Role and permission management using Spatie Permission
-- Course import and export using Maatwebsite Excel
-- Newsletter subscription management and contact response workflow
-
-### Authentication & Account Management
-
-- Laravel authentication scaffolding with registration, login, logout
-- Email verification and password reset flow
-- Google OAuth login via Laravel Socialite
-- Profile settings, password updates, and appearance preferences
-
-### Platform Essentials
-
-- Stripe webhook handler for secure payment status updates
-- Course progress completion and lesson tracking
-- Cart and wishlist persistence per user
-- Cache-optimized home page queries for top categories, instructors, and courses
-- Soft deletes, searchable models, and media-rich course pages
+![Platform screenshot](./screenshots/Screenshot%202026-05-28%20161141.png)
 
 ---
 
-## Technology Stack
+## Feature Set
 
-- PHP 8.2
-- Laravel 12
-- Blade Templates
-- AlpineJS
-- Tailwind CSS v4
-- Vite
-- MySQL / SQLite compatible
+### Student
 
-### Packages and integrations
+- Course discovery with full-text search and category filtering
+- Course detail pages with preview lessons, instructor profiles, ratings, and enrollment status
+- Cart, wishlist, and coupon application
+- Stripe-powered checkout with webhook-driven enrollment confirmation
+- Learning dashboard with per-lesson progress tracking
+- Downloadable completion certificates (PDF)
+- Course reviews and threaded discussion participation
+- In-app notification system
 
-- `laravel/cashier` — Stripe checkout plus billing/webhook handling
-- `laravel/socialite` — Google OAuth login
-- `laravel/scout` + `typesense/typesense-php` — course search and indexing
-- `spatie/permission` — role and permission management
-- `spatie/laravel-medialibrary` — image/video/media uploads and responsive handling
-- `maatwebsite/excel` — import and export course data
-- `spatie/laravel-pdf`, `spatie/browsershot`, `pbmedia/laravel-ffmpeg` — rich content generation and media handling
-- `owenvoke/blade-fontawesome`, `blade-ui-kit/blade-icons` — iconography and UI components
-- `alpinejs` — lightweight interactivity
+### Instructor
+
+- Dedicated instructor dashboard behind protected route middleware
+- Stripe Connect onboarding for direct payouts
+- Course and lesson authoring with media upload support
+- Discussion management and student reply workflow
+- Course engagement statistics
+
+### Admin
+
+- Role-based admin panel using Spatie Permission
+- Full CRUD management across users, courses, lessons, enrollments, reviews, certificates, categories, coupons, contacts, and newsletters
+- Course data import and export via Maatwebsite Excel
+- Newsletter and contact form response management
+
+### Platform
+
+- Laravel authentication with email verification and password reset
+- Google OAuth via Laravel Socialite
+- Stripe webhook handler for payment reconciliation
+- Course progress and lesson completion tracking
+- Cache-optimised home page (top categories, instructors, featured courses)
+- Soft deletes across core models
+- Full-text search indexing with Typesense via Laravel Scout
 
 ---
 
-## Architecture & Design
+## Tech Stack
 
-- Uses RESTful resource controllers for admin CRUD operations
-- Applies route grouping, middleware, and named routes for clean navigation
-- Employs service classes for business logic separation (`CourseService`, `ContactService`, `StripeConnectService`, etc.)
-- Uses model scopes and relationships to keep controllers focused on HTTP behavior
-- Produces reusable UI patterns with Blade components and partials
-- Includes a scalable course data model with sections, lessons, reviews, enrollments, and certificates
+| Layer | Technology |
+|---|---|
+| Language | PHP 8.2 |
+| Framework | Laravel 12 |
+| Frontend | Blade, AlpineJS, Tailwind CSS v4 |
+| Build tooling | Vite |
+| Database | MySQL / SQLite |
+| Search | Typesense (via Laravel Scout) |
+| Payments | Stripe Checkout, Stripe Connect, Laravel Cashier |
+| Auth | Laravel Socialite (Google OAuth) |
+| Media | Spatie Media Library |
+| PDF / Certificates | Spatie Laravel PDF, Browsershot |
+| Video | pbmedia Laravel FFmpeg |
+| Roles & Permissions | Spatie Laravel Permission |
+| Import / Export | Maatwebsite Excel |
+| Icons | Blade FontAwesome, Blade UI Kit |
+
+---
+
+## Architecture
+
+The application follows conventional Laravel conventions with a few deliberate patterns applied consistently across the codebase.
+
+**Controllers** are kept thin. HTTP-layer concerns (request validation via Form Requests, response formatting, redirects) are handled in controllers. Business logic is delegated to dedicated service classes.
+
+**Service classes** encapsulate domain operations that span multiple models or require external service coordination — for example, `StripeConnectService` manages Connect account lifecycle, `CourseService` handles enrollment side effects, and `ContactService` owns the contact/newsletter workflow.
+
+**Policies** govern authorisation at the model level. Route middleware handles coarse-grained role checks (admin, instructor, student), while policies handle fine-grained ownership and permission rules.
+
+**Models** expose scopes and relationships to keep query logic co-located with the data they describe. Controllers consume scoped queries rather than constructing them inline.
+
+**Blade components and partials** are used for all recurring UI patterns — course cards, lesson rows, modals, form inputs — keeping views composable and avoiding duplication.
+
+**Route organisation** uses named route groups with shared middleware stacks per role, making the routing table easy to audit.
 
 ---
 
 ## Installation
 
+> Requires PHP 8.2+, Composer, Node 18+, and a running MySQL or SQLite instance.
+
 ```bash
+git clone https://github.com/your-username/learnify.git
+cd learnify
+
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate --seed
-npm install
-npm run dev
 ```
 
-> If you are using Windows PowerShell, replace `cp` with `copy`.
+Configure your database, Stripe keys, and Google OAuth credentials in `.env`, then:
 
-### Recommended local startup
+```bash
+php artisan migrate --seed
+npm install
+npm run build
+```
+
+For local development using the Vite dev server:
 
 ```bash
 npm run dev
 php artisan serve
 ```
 
----
-
-## Useful commands
-
-- `composer install` — install PHP dependencies
-- `npm install` — install frontend dependencies
-- `php artisan migrate` — run database migrations
-- `php artisan db:seed` — seed demo data if available
-- `npm run dev` — start Vite development mode
-- `npm run build` — build production assets
-- `php artisan test --compact` — run the test suite
+> **Windows (PowerShell):** replace `cp` with `copy` in the commands above.
 
 ---
 
-## What a recruiter should notice
+### Required environment variables
 
-- A robust multi-role application built without Vue/React or Livewire
-- Complete payment workflow with Stripe checkout and webhook reconciliation
-- Admin, instructor, and student interfaces that mirror real SaaS products
-- Strong package selection that demonstrates modern Laravel craftsmanship
-- Scalable course marketplace architecture ready for extension
+```env
+# Database
+DB_CONNECTION=mysql
+DB_DATABASE=learnify
+
+# Stripe
+STRIPE_KEY=pk_test_...
+STRIPE_SECRET=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Google OAuth
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+
+# Typesense
+TYPESENSE_API_KEY=...
+TYPESENSE_HOST=localhost
+```
 
 ---
 
-## Screenshots
+## Development
 
-![](./screenshots/Screenshot%202026-05-28%20161141.png)
+| Command | Description |
+|---|---|
+| `php artisan serve` | Start the local development server |
+| `npm run dev` | Start the Vite HMR dev server |
+| `npm run build` | Compile and bundle production assets |
+| `php artisan migrate` | Run pending database migrations |
+| `php artisan db:seed` | Seed the database with demo data |
+| `php artisan scout:import "App\Models\Course"` | Index courses into Typesense |
+| `php artisan queue:work` | Start the queue worker (for mail and media jobs) |
+
+---
+
+## Testing
+
+```bash
+php artisan test --compact
+```
+
+Tests cover core flows including enrollment, payment webhooks, and role-based access control.
 
 ---
 
 ## License
 
-This project is open sourced under the MIT License.
+This project is open-sourced under the [MIT License](LICENSE).
