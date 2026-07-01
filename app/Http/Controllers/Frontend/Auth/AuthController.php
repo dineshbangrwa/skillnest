@@ -14,39 +14,43 @@ class AuthController extends Controller
 {
     public function googleCallback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $user = User::firstOrCreate(
-            ['email' => $googleUser->email],
-            [
-                'name' => $googleUser->name,
-                'password' => Hash::make(Str::random(16)),
-                'google_id' => $googleUser->id,
-            ]
+            $user = User::firstOrCreate(
+                ['email' => $googleUser->email],
+                [
+                    'name' => $googleUser->name,
+                    'password' => Hash::make(Str::random(16)),
+                    'google_id' => $googleUser->id,
+                ]
 
-        );
-        if ($googleUser->avatar) {
-            $user->addMediaFromUrl($googleUser->avatar)->toMediaCollection('image');
+            );
+            if ($googleUser->avatar) {
+                $user->addMediaFromUrl($googleUser->avatar)->toMediaCollection('image');
+            }
+
+            if (! $user->google_id) {
+                $user->update([
+                    'google_id' => $googleUser->id,
+                ]);
+            }
+
+            Auth::login($user);
+
+            if ($user->wasRecentlyCreated) {
+                $user->assignRole('student'); //
+                $user->notify(new WelcomeNotification(
+                    $user->name,
+                    to_route('index')
+                ));
+            }
+
+            return redirect()
+                ->intended(route('index'))
+                ->with('message', 'Login successful via Google');
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Google login canceled or failed. Please try again.');
         }
-
-        if (! $user->google_id) {
-            $user->update([
-                'google_id' => $googleUser->id,
-            ]);
-        }
-
-        Auth::login($user);
-
-        if ($user->wasRecentlyCreated) {
-            $user->assignRole('student'); //
-            $user->notify(new WelcomeNotification(
-                $user->name,
-                to_route('index')
-            ));
-        }
-
-        return redirect()
-            ->intended(route('index'))
-            ->with('message', 'Login successful via Google');
     }
 }
