@@ -41,7 +41,6 @@ class CategoryController extends Controller
         $this->categoryService->create($data);
 
         return to_route('admin.categories.index')->with('status', 'Category Created successfully!');
-
     }
 
     /**
