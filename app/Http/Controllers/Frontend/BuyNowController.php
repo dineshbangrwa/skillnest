@@ -61,7 +61,7 @@ class BuyNowController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Coupon applied! You saved $' . number_format($discount, 2),
+            'message' => 'Coupon applied! You saved $'.number_format($discount, 2),
             'coupon_discount' => $discount,
             'final_total' => $finalTotal,
         ]);

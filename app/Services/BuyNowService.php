@@ -43,7 +43,6 @@ class BuyNowService
                     $discount = round(min($discount, $price), 2);
                     $couponCode = $coupon->code;
 
-
                     $coupon->increment('used_count');
                 }
             }
@@ -82,7 +81,7 @@ class BuyNowService
                     'quantity' => 1,
                 ],
             ], [
-                'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'success_url' => route('checkout.success').'?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => route('courses.show', $course->slug),
                 'metadata' => [
                     'order_id' => $order->id,
