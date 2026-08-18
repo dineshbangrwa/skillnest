@@ -13,8 +13,8 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::job(new ProcessInstructorTransfers)
-    ->dailyAt('00:00')
-    // ->everyMinute()
+    // ->dailyAt('00:00')
+    ->everyMinute()
     ->name('process-instructor-transfers')
     ->withoutOverlapping()
     ->onFailure(function () {

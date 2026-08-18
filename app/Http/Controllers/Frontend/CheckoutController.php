@@ -24,7 +24,6 @@ class CheckoutController extends Controller
 
         return view('frontend.pages.checkout', compact('cart', 'totalOriginalPrice'));
     }
-
     public function store(Request $request)
     {
         return $this->orderService->create($request);
