@@ -21,7 +21,8 @@ A full-featured course marketplace built on **Laravel 12**, **Blade**, **AlpineJ
 
 Learnify is a production-oriented learning marketplace covering the full lifecycle of an online course platform: content creation, discovery, purchase, consumption, and certification. The application is intentionally built without a JavaScript framework on the frontend — Blade components, AlpineJS, and server-side rendering handle all UI concerns cleanly and efficiently.
 
-![Platform screenshot](./screenshots/home.png)(./screenshots/home.png)
+![Platform screenshot](./screenshots/home.png)
+![Platform screenshot](./screenshots/home.png)
 
 ---
 
