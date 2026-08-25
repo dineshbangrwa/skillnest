@@ -47,7 +47,7 @@ class HomeController extends Controller
                     $q->join('enrollments', 'courses.id', '=', 'enrollments.course_id');
                 },
             ])
-                ->withAvg('courseReviews', 'rating') // 👈 yeh add karo
+                ->withAvg('courseReviews', 'rating')
                 ->having('courses_count', '>', 0)
                 ->orderByDesc('students_count')
                 ->orderByDesc('reviews_count')
@@ -62,7 +62,7 @@ class HomeController extends Controller
     public function course($slug)
     {
         $course = Course::where('slug', $slug)->with(['sections.lessons'])->firstOrFail();
-        $isPurchased = auth()->user()->enrollments()->where('course_id', $course->id)->exists();
+        $isPurchased = auth()->check() ? auth()->user()->enrollments()->where('course_id', $course->id)->exists() : false;
         $inCart = false;
         if (auth()->check()) {
             $cart = auth()->user()->cart()->with('items')->first();
