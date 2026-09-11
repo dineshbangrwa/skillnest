@@ -22,13 +22,13 @@ class StripeWebhookController extends CashierController
             ->first();
 
         if (! $order) {
-            Log::error('Order not found for session: '.$session['id']);
+            Log::error('Order not found for session: ' . $session['id']);
 
             return response()->json(['message' => 'Order not found'], 404);
         }
 
         if ($order->status === Order::STATUS_PAID) {
-            Log::info('Order already paid: '.$order->id);
+            Log::info('Order already paid: ' . $order->id);
 
             return response()->json(['message' => 'Already processed']);
         }
@@ -65,10 +65,10 @@ class StripeWebhookController extends CashierController
 
             $order->user->notify(new CoursePurchasedNotification($order));
 
-            Log::info('Order marked as PAID: '.$order->id);
+            Log::info('Order marked as PAID: ' . $order->id);
         } else {
             $order->update(['status' => Order::STATUS_FAILED]);
-            Log::warning('Payment failed for order: '.$order->id);
+            Log::warning('Payment failed for order: ' . $order->id);
         }
 
         return response()->json(['status' => 'success']);

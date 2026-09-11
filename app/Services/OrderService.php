@@ -43,18 +43,32 @@ class OrderService
                 ]);
             }
 
-            $lineItems = $cart->items->map(function ($item) {
-                return [
+            $lineItems = [];
+            $discountRemaining = $discount;
+            $itemsCount = $cart->items->count();
+
+            foreach ($cart->items as $index => $item) {
+                if ($index === $itemsCount - 1) {
+                    // Last item takes whatever discount is remaining to avoid rounding issues
+                    $itemDiscount = $discountRemaining;
+                } else {
+                    $itemDiscount = $subtotal > 0 ? round(($item->price / $subtotal) * $discount, 2) : 0;
+                    $discountRemaining -= $itemDiscount;
+                }
+
+                $finalPrice = max(0, $item->price - $itemDiscount);
+
+                $lineItems[] = [
                     'price_data' => [
                         'currency' => 'usd',
-                        'unit_amount' => (int) round($item->price * 100),
+                        'unit_amount' => (int) round($finalPrice * 100),
                         'product_data' => [
                             'name' => $item->course->title ?? 'Course',
                         ],
                     ],
                     'quantity' => 1,
                 ];
-            })->toArray();
+            }
 
             $checkout = $user->checkout($lineItems, [
                 'success_url' => route('checkout.success').'?session_id={CHECKOUT_SESSION_ID}',

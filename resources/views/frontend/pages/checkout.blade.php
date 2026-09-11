@@ -181,9 +181,12 @@
                                 </label>
                                 <div class="flex gap-2">
                                     <input type="text" id="couponInput" name="coupon_code" placeholder="Enter code"
-                                        class="flex-1 border-2 border-gray-200 rounded px-3 sm:px-4 py-2.5 text-sm outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition">
+                                            value="{{ isset($cart) && $cart->coupon_code ? $cart->coupon_code : '' }}"
+                                        {{ isset($cart) && $cart->coupon_code ? 'readonly' : '' }}
+                                        class="flex-1 border-2 border-gray-200 rounded px-3 sm:px-4 py-2.5 text-sm outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition {{ isset($cart) && $cart->coupon_code ? 'opacity-50' : '' }}">
                                     <button type="button" onclick="applyCoupon()" id="applyCouponBtn"
-                                        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 sm:px-6 py-2.5 rounded text-sm transition text-center">
+                                        {{ isset($cart) && $cart->coupon_code ? 'disabled' : '' }}
+                                        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 sm:px-6 py-2.5 rounded text-sm transition text-center disabled:opacity-50 disabled:cursor-not-allowed">
                                         Apply
                                     </button>
                                 </div>
