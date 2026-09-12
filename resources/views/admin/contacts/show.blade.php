@@ -38,7 +38,6 @@
                     <span class="text-gray-800 dark:text-gray-100">{{ $contact->created_at->format('d M Y') }}</span>
                 </div>
             </div>
-
             <div class="mt-6 flex justify-center space-x-2">
                 <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST"
                     onsubmit="return confirm('{{ __('Are you sure?') }}')">
